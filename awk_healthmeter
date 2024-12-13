@@ -1,0 +1,20 @@
+③awkで最小値、最大値、平均値を計算するスクリプト(サンプル)
+
+スクリプト名　3mh.awk
+## ヘルスメータ一暦年data整理
+## min、max、meanを求める
+NR == 1 {for (i=1;i<=NF;i++) {name[i]=$i;min[i]=10000;max[i]=0}}
+# 各項目の合計とmin・max抽出
+NR > 1 {for (i = 2; i <= NF; i++)  
+	{sum[i] += $i
+	if($i < min[i])	min[i]=$i
+	if($i > max[i]) max[i]=$i
+	}
+}
+# 結果印刷
+END {cnt=NR-1;
+    printf "  %4s年 health meter  測定回数 %5d回\n",name[1],cnt
+    printf "      項目     min.     max.     mean\n"
+    for (i=2; i <= NF; i++)
+	printf "%10s %8.1f %8.1f %8.2f\n",name[i],min[i],max[i],sum[i]/cnt
+}
