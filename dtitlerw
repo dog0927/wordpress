@@ -1,0 +1,21 @@
+#!/bin/bash
+LANG=C
+year=$1
+month=$2
+year4=$((2000+${year}))
+month2=$(printf "%02d\n" "${month}")
+name=d$year$month2.org
+echo $name
+days=$(cal $month $year | awk 'NF {DAYS=$NF}; END {print DAYS}')
+echo $days
+if [ -f ./$name ]
+then
+   echo "${name} is exist !!  Please check yy mm"
+
+else
+       touch $name
+       echo "#+STARTUP: fold" > $name
+       for day in `seq 1 $days`;do date -d $year4/$month/$day +"* %Y.%m.%d(%a) bp ";done >> $name
+       cat $name
+fi
+#
